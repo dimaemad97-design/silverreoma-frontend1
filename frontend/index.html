@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Silverreoma — مجوهرات فضة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Tajawal:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ========== NAVBAR ========== -->
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="goHome()">
+      <span class="logo-text">SILVERREOMA</span>
+      <span class="logo-sub">مجوهرات فضة ٩٢٥</span>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <button onclick="showCategory('all')" class="nav-link active" data-cat="all">الكل</button>
+      <button onclick="showCategory('bracelets')" class="nav-link" data-cat="bracelets">أساور</button>
+      <button onclick="showCategory('necklaces')" class="nav-link" data-cat="necklaces">قلادات</button>
+      <button onclick="showCategory('rings')" class="nav-link" data-cat="rings">خواتم</button>
+      <button onclick="showCategory('men_bracelets')" class="nav-link" data-cat="men_bracelets">رجالي</button>
+      <button onclick="showCategory('sets')" class="nav-link" data-cat="sets">أطقم</button>
+      <button onclick="showCategory('earrings')" class="nav-link" data-cat="earrings">حلق</button>
+    </div>
+    <div class="nav-actions" id="nav-actions">
+      <!-- Filled by JS -->
+    </div>
+    <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+  </div>
+</nav>
+
+<!-- ========== HERO ========== -->
+<section class="hero" id="hero-section">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <h1 class="hero-title">
+      <span class="hero-line hero-line-1">Unforgettable </span>
+      <span class="hero-line hero-line-2">elegance</span>
+    </h1>
+    <p class="hero-sub">Italian 925 sterling silver with a luxurious rhodium plating</p>
+    <button class="hero-cta" onclick="document.getElementById('shop-section').scrollIntoView({behavior:'smooth'})">Shop now</button>
+  </div>
+  <div class="hero-scroll-hint">
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ========== SEARCH ========== -->
+<section class="search-section" id="shop-section">
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="ابحثي عن قطعتك المفضلة..." oninput="searchProducts()">
+    <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+  </div>
+</section>
+
+<!-- ========== PRODUCTS GRID ========== -->
+<section class="products-section">
+  <div id="products-grid" class="products-grid">
+    <!-- Rendered by JS -->
+  </div>
+  <div id="empty-state" class="empty-state" style="display:none;">
+    <div class="empty-icon">✦</div>
+    <h3>لا توجد منتجات بعد</h3>
+    <p>ترقبوا إضافة قطع جديدة قريباً</p>
+  </div>
+</section>
+
+<!-- ========== CART DRAWER ========== -->
+<div class="drawer-overlay" id="cart-overlay" onclick="closeCart()"></div>
+<aside class="cart-drawer" id="cart-drawer">
+  <div class="drawer-header">
+    <h2>سلة التسوق</h2>
+    <button class="drawer-close" onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-body" id="cart-items">
+    <p class="empty-cart-msg">السلة فارغة</p>
+  </div>
+  <div class="drawer-footer" id="cart-footer" style="display:none;">
+    <div class="cart-total-row">
+      <span>المجموع</span>
+      <span id="cart-total">0 د.ع</span>
+    </div>
+    <button class="btn-checkout" onclick="openCheckoutModal()">إتمام الطلب</button>
+  </div>
+</aside>
+
+<!-- ========== CART FLOATING BUTTON ========== -->
+<button class="cart-fab" id="cart-fab" onclick="openCart()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+  <span class="cart-badge" id="cart-count">0</span>
+</button>
+
+<!-- ========== MODALS ========== -->
+
+<!-- LOGIN -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    <div class="modal-icon">◇</div>
+    <h2>تسجيل الدخول</h2>
+    <form onsubmit="handleLogin(event)">
+      <div class="form-group">
+        <input type="email" id="loginEmail" placeholder="البريد الإلكتروني" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="loginPassword" placeholder="كلمة المرور" required>
+      </div>
+      <button type="submit" class="btn-primary">دخول</button>
+    </form>
+    <p class="modal-switch">ليس لديك حساب؟ <a href="#" onclick="closeModal('loginModal');openModal('registerModal')">إنشاء حساب</a></p>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+    <div class="modal-icon">◇</div>
+    <h2>إنشاء حساب</h2>
+    <form onsubmit="handleRegister(event)">
+      <div class="form-group">
+        <input type="text" id="regName" placeholder="الاسم الكامل" required>
+      </div>
+      <div class="form-group">
+        <input type="email" id="regEmail" placeholder="البريد الإلكتروني" required>
+      </div>
+      <div class="form-group">
+        <input type="password" id="regPassword" placeholder="كلمة المرور" required minlength="6">
+      </div>
+      <button type="submit" class="btn-primary">إنشاء حساب</button>
+    </form>
+    <p class="modal-switch">لديك حساب؟ <a href="#" onclick="closeModal('registerModal');openModal('loginModal')">تسجيل الدخول</a></p>
+  </div>
+</div>
+
+<!-- CHECKOUT -->
+<div class="modal-overlay" id="checkoutModal">
+  <div class="modal-card modal-wide">
+    <button class="modal-close" onclick="closeModal('checkoutModal')">✕</button>
+    <h2>إتمام الطلب</h2>
+    <form onsubmit="handleCheckout(event)" id="checkoutForm">
+      <div class="checkout-grid">
+        <div class="form-group">
+          <label>الاسم الكامل</label>
+          <input type="text" id="coName" required>
+        </div>
+        <div class="form-group">
+          <label>رقم الهاتف</label>
+          <input type="tel" id="coPhone" required>
+        </div>
+        <div class="form-group full-width">
+          <label>العنوان الكامل</label>
+          <textarea id="coAddress" rows="2" required></textarea>
+        </div>
+        <div class="form-group full-width">
+          <label>ملاحظات (اختياري)</label>
+          <textarea id="coNotes" rows="2"></textarea>
+        </div>
+        <div class="form-group full-width">
+          <label>طريقة الدفع</label>
+          <div class="payment-options">
+            <label class="payment-option selected" id="opt-cash">
+              <input type="radio" name="payMethod" value="cash" checked onchange="togglePayment()">
+              <span class="pay-icon">💵</span>
+              <span>كاش عند الاستلام</span>
+            </label>
+            <label class="payment-option" id="opt-card">
+              <input type="radio" name="payMethod" value="card" onchange="togglePayment()">
+              <span class="pay-icon">💳</span>
+              <span>بطاقة</span>
+            </label>
+          </div>
+        </div>
+        <div id="card-fields" class="full-width" style="display:none;">
+          <div class="checkout-grid">
+            <div class="form-group">
+              <label>رقم البطاقة</label>
+              <input type="text" id="coCardNum" maxlength="19" placeholder="0000 0000 0000 0000">
+            </div>
+            <div class="form-group">
+              <label>الاسم على البطاقة</label>
+              <input type="text" id="coCardName">
+            </div>
+            <div class="form-group">
+              <label>تاريخ الانتهاء</label>
+              <input type="month" id="coCardExp">
+            </div>
+            <div class="form-group">
+              <label>CVV</label>
+              <input type="text" id="coCardCVV" maxlength="4">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="checkout-summary" id="checkout-summary"></div>
+      <button type="submit" class="btn-primary btn-lg" id="checkout-submit-btn">تأكيد الطلب</button>
+    </form>
+  </div>
+</div>
+
+<!-- MY ORDERS -->
+<div class="modal-overlay" id="ordersModal">
+  <div class="modal-card modal-wide">
+    <button class="modal-close" onclick="closeModal('ordersModal')">✕</button>
+    <h2>طلباتي</h2>
+    <div id="orders-list"></div>
+  </div>
+</div>
+
+<!-- ========== ADMIN DASHBOARD ========== -->
+<div class="modal-overlay" id="adminModal">
+  <div class="modal-card modal-fullscreen">
+    <button class="modal-close" onclick="closeModal('adminModal')">✕</button>
+    <div class="admin-dashboard">
+      <h2 class="admin-title">لوحة التحكم</h2>
+
+      <!-- Stats -->
+      <div class="admin-stats" id="admin-stats"></div>
+
+      <!-- Tabs -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" onclick="switchAdminTab('products', this)">المنتجات</button>
+        <button class="admin-tab" onclick="switchAdminTab('orders', this)">الطلبات</button>
+        <button class="admin-tab" onclick="switchAdminTab('add-product', this)">إضافة منتج</button>
+      </div>
+
+      <!-- Tab: Products -->
+      <div class="admin-panel" id="admin-tab-products">
+        <div id="admin-products-list" class="admin-products-grid"></div>
+      </div>
+
+      <!-- Tab: Orders -->
+      <div class="admin-panel" id="admin-tab-orders" style="display:none;">
+        <div id="admin-orders-list"></div>
+      </div>
+
+      <!-- Tab: Add Product -->
+      <div class="admin-panel" id="admin-tab-add-product" style="display:none;">
+        <form id="addProductForm" class="admin-form" onsubmit="handleAddProduct(event)">
+          <div class="checkout-grid">
+            <div class="form-group">
+              <label>اسم المنتج</label>
+              <input type="text" id="apName" required>
+            </div>
+            <div class="form-group">
+              <label>السعر (د.ع)</label>
+              <input type="number" id="apPrice" required>
+            </div>
+            <div class="form-group">
+              <label>الفئة</label>
+              <select id="apCategory">
+                <option value="bracelets">bracelets</option>
+                <option value="necklaces">necklaces</option>
+                <option value="rings">rings</option>
+                <option value="men_bracelets">men_bracelets</option>
+                <option value="sets">sets</option>
+                <option value="earrings">earrings</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>صورة المنتج</label>
+              <div class="image-source-toggle">
+                <button type="button" class="img-toggle-btn active" onclick="switchImageSource('file', this)">📁 رفع ملف</button>
+                <button type="button" class="img-toggle-btn" onclick="switchImageSource('url', this)">🔗 رابط URL</button>
+              </div>
+              <div id="img-src-file">
+                <input type="file" id="apImage" accept="image/*" onchange="previewImage(this)">
+              </div>
+              <div id="img-src-url" style="display:none;">
+                <input type="text" id="apImageUrl" placeholder="https://example.com/image.jpg" oninput="previewUrl(this.value)">
+              </div>
+              <div id="img-preview" class="img-preview-box" style="display:none;">
+                <img id="img-preview-el" src="" alt="preview">
+                <button type="button" class="img-preview-clear" onclick="clearImagePreview()">✕</button>
+              </div>
+            </div>
+            <div class="form-group full-width">
+              <label>الوصف</label>
+              <textarea id="apDesc" rows="3"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn-primary">إضافة المنتج</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== TOAST CONTAINER ========== -->
+<div id="toast-container"></div>
+
+<!-- ========== PRODUCT QUICK VIEW ========== -->
+<div class="modal-overlay" id="productViewModal">
+  <div class="modal-card modal-product">
+    <button class="modal-close" onclick="closeModal('productViewModal')">✕</button>
+    <div id="product-view-content"></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-logo">SILVERREOMA</span>
+    <p>فضة إيطالية عيار ٩٢٥ — طلاء روديوم فاخر</p>
+    <p class="footer-copy">© 2026 Silverreoma. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
