@@ -2,7 +2,7 @@
 // SILVERREOMA — Frontend JS (API-Integrated)
 // =============================================
 
-const API = 'https://silverreoma-backend1.vercel.app/api';
+const API = 'https://silverreoma-backend1-mecn.vercel.app/api';
 
 let currentUser = null;
 let allProducts = [];
